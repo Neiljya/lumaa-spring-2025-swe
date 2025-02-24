@@ -4,116 +4,168 @@
 
 ---
 
-## Overview
+# Task Manager App
 
-Create a “Task Management” application with **React + TypeScript** (frontend), **Node.js** (or **Nest.js**) (backend), and **PostgreSQL** (database). The application should:
-
-1. **Register** (sign up) and **Log in** (sign in) users.
-2. After logging in, allow users to:
-   - **View a list of tasks**.
-   - **Create a new task**.
-   - **Update an existing task** (e.g., mark complete, edit).
-   - **Delete a task**.
-
-Focus on **correctness**, **functionality**, and **code clarity** rather than visual design.  
-This challenge is intended to be completed within ~3 hours, so keep solutions minimal yet functional.
-
+This repository contains a full-stack task management application with a simple functioning backend
 ---
 
-## Requirements
-
-### 1. Authentication
-
-- **User Model**:
-  - `id`: Primary key
-  - `username`: Unique string
-  - `password`: Hashed string
-- **Endpoints**:
-  - `POST /auth/register` – Create a new user
-  - `POST /auth/login` – Login user, return a token (e.g., JWT)
-- **Secure the Tasks Routes**: Only authenticated users can perform task operations.  
-  - **Password Hashing**: Use `bcrypt` or another hashing library to store passwords securely.
-  - **Token Verification**: Verify the token (JWT) on each request to protected routes.
-
-### 2. Backend (Node.js or Nest.js)
-
-- **Tasks CRUD**:  
-  - `GET /tasks` – Retrieve a list of tasks (optionally filtered by user).  
-  - `POST /tasks` – Create a new task.  
-  - `PUT /tasks/:id` – Update a task (e.g., mark as complete, edit text).  
-  - `DELETE /tasks/:id` – Delete a task.
-- **Task Model**:
-  - `id`: Primary key
-  - `title`: string
-  - `description`: string (optional)
-  - `isComplete`: boolean (default `false`)
-  - _(Optional)_ `userId` to link tasks to the user who created them
-- **Database**: PostgreSQL
-  - Provide instructions/migrations to set up:
-    - `users` table (with hashed passwords)
-    - `tasks` table
-- **Setup**:
-  - `npm install` to install dependencies
-  - `npm run start` (or `npm run dev`) to run the server
-  - Document any environment variables (e.g., database connection string, JWT secret)
-
-### 3. Frontend (React + TypeScript)
-
-- **Login / Register**:
-  - Simple forms for **Register** and **Login**.
-  - Store JWT (e.g., in `localStorage`) upon successful login.
-  - If not authenticated, the user should not see the tasks page.
-- **Tasks Page**:
-  - Fetch tasks from `GET /tasks` (including auth token in headers).
-  - Display the list of tasks.
-  - Form to create a new task (`POST /tasks`).
-  - Buttons/fields to update a task (`PUT /tasks/:id`).
-  - Button to delete a task (`DELETE /tasks/:id`).
-- **Navigation**:
-  - Show `Login`/`Register` if not authenticated.
-  - Show `Logout` if authenticated.
-- **Setup**:
-  - `npm install` then `npm start` (or `npm run dev`) to run.
-  - Document how to point the frontend at the backend (e.g., `.env` file, base URL).
+## Features
+- **User Authentication** - Register and login with JWT authentication
+- **Task Manager** - Create, retrieve, update, and delete tasks
+- **PostgreSQL Database Compatible** - Stores users and tasks persistently
 
 ---
+## Setup Guide
 
-## Deliverables
+### 1. Clone the Repository
+Run the following command:
+``bash
+git clone https://github.com/Neiljya/lumaa-spring-2025-swe.git
+``
+---
+## Setting Up The Database (PostgreSQL)
 
-1. **Fork the Public Repository**: **Fork** this repo into your own GitHub account.
-2. **Implement Your Solution** in the forked repository. Make sure you're README file has:
-   - Steps to set up the database (migrations, environment variables).
-   - How to run the backend.
-   - How to run the frontend.
-   - Any relevant notes on testing.
-   - Salary Expectations per month (Mandatory)
-3. **Short Video Demo**: Provide a link (in a `.md` file in your forked repo) to a brief screen recording showing:
-   - Registering a user
-   - Logging in
-   - Creating, updating, and deleting tasks
-4. **Deadline**: Submissions are due **Sunday, Feb 23th 11:59 pm PST**.
+### 2. Ensure PostgreSQL is installed
+If not, you can install PostgreSQL from [postgresql.org](https://www.postgresql.org/download/).
 
-> **Note**: Please keep your solution minimal. The entire project is intended to be completed in around 3 hours. Focus on core features (registration, login, tasks CRUD) rather than polished UI or extra features.
+### 3. Configure the `.env` file
+Create a `.env` file in the **root directory** in the following format:
+```bash
+PORT=3000
+PG_HOST=localhost
+PG_USER=your_pg_user
+PG_PASSWORD=your_password
+PG_DATABASE=your_db_name
+JWT_SECRET=your_secret
+```
+**Be sure to change the PG_USER, PG_PASSWORD, PG_DATABASE, and JWT_SECRET fields to match your information**
 
+**Note:** By default, this project assumes you are testing on your local machine so `localhost` should remain the same, however, you are free to change the value of `PORT` to whatever port you would like.
+
+To **generate a secure `JWT_SECRET`**, run:
+``bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+``
+### 4. Running Database Migrations
+Navigate to the **migrations** folder: 
+``bash
+cd task-manager/src/backend/migrations
+``
+
+Run the following inside `psql`:
+**1.**
+``bash
+\i migration_users.sql;
+``
+**2.**
+``bash
+\i migration_tasks.sql;
+``
+This will create the necessary tables (`users` and `tasks`).
+---
+## Running the Backend
+
+Ensure that you are within the `task-manager/` directory first.
+
+1. Install the backend dependencies:
+``bash
+npm install
+``
+
+2. Start the backend server:
+``bash
+npm run dev:backend
+``
+The server should now be running on `http://localhost:${PG_PORT}`
 ---
 
-## Evaluation Criteria
+## Running the Frontend
+1. Open a new terminal and navigate to `task-manager/`
+2. Start the frontend by running:
+``bash
+npm run dev
+``
+The frontend should be available at `http://localhost:5173`
+---
+## API Routes
+### **Authentication Routes**
+- `POST /api/auth/register` -> Registers a new user
+- `POST /api/auth/login` -> Login and receive a JWT token
 
-1. **Functionality**  
-   - Does registration and login work correctly (with password hashing)?
-   - Are tasks protected by authentication?
-   - Does the tasks CRUD flow work end-to-end?
+### **Task Routes** (Requires Authentication)
+- `GET /api/tasks` -> Gets tasks for the authenticated user.
+- `POST /api/tasks` -> Creates a new task
+- `PUT /api/tasks/:id` -> Updates tasks details (for now it only marks a task as completed or not)
+- `DELETE /api/tasks/:id` -> Deletes a task
 
-2. **Code Quality**  
-   - Is the code structured logically and typed in TypeScript?
-   - Are variable/function names descriptive?
+---
+## Testing the API
+**Option 1: Using Postman**
+- Send requests to `http://localhost:${PG_PORT}/api/auth/register` or `http://localhost:${PG_PORT}/api/auth/login`
+- Copy the token from response and use it as an `Authorization: Bearer <TOKEN>` header for tasks
 
-3. **Clarity**  
-   - Is the `README.md` (in your fork) clear and detailed about setup steps?
-   - Easy to run and test?
+**Option 2: Using Curl**
+Example:
+``bash
+curl -X POST http://localhost:3000/api/auth/register -H "Content-Type:
+application/json" -d '{"username":"testuser","password":"password123"}'
+``
+---
+## Troubleshooting
+### Backend Not Starting?
+- Ensure you're connected to your PostgreSQL database
+``bash
+\c your_database_name
+``
 
-4. **Maintainability**  
-   - Organized logic (controllers/services, etc.)
-   - Minimal hard-coded values
+- Verify `.env` variables are correctly set in the format:
+``bash
+PORT=3000
+PG_HOST=localhost
+PG_USER=your_pg_user
+PG_PASSWORD=your_password
+PG_DATABASE=your_db_name
+JWT_SECRET=your_secret
+``
 
-Good luck, and we look forward to your submission!
+- Check if the database already exists by running
+``bash
+psql -U postgres -d your_db_name
+``
+
+### Database Connection Failing?
+- Verify the `.env` credentials match your PostgreSQL setup
+- Check that you've properly migrated the tables:
+``bash
+\dt
+``
+The relations list should look like this:
+``bash
+         List of relations
+ Schema | Name  | Type  |  Owner
+--------+-------+-------+----------
+ public | tasks | table | postgres
+ public | users | table | postgres
+(2 rows)
+``
+---
+**Additional Notes/Improvements**
+In the future, further project improvements could include adding 
+additional unit tests such as jest tests for backend services and frontend components.
+
+There could be additional enhancements that could make the code more modular especially within
+the queries in the models. As of right now, the project is small in scale but if additional fields
+were to be added for users and tasks, queries could be improved by creating more constants and 
+customizable queries for each method.
+
+I would've liked to go back and refactor the code to use more variables in places
+where base routes are more hardcoded to reduce mental overhead, however, due to time constraints,
+these changes weren't prioritized as for the sake of testing the current project, those fields would
+most likely not need to be modified. But for future reference, that is something to consider.
+
+Additional comments for files and overall API structure could also improve clarity or a full documentation on the architecture of the application.
+
+As for the backend, currently there is no rate limit for API requests which can be easily abused
+if the project were to be deployed, as a fix, using `express-rate-limit` could help prevent
+the abuse of such routes.
+---
