@@ -19,6 +19,7 @@ This repository contains a full-stack task management application with a simple 
 
 ### 1. Clone the Repository
 Run the following command:
+
 ``bash
 git clone https://github.com/Neiljya/lumaa-spring-2025-swe.git
 ``
@@ -30,6 +31,7 @@ If not, you can install PostgreSQL from [postgresql.org](https://www.postgresql.
 
 ### 3. Configure the `.env` file
 Create a `.env` file in the **root directory** in the following format:
+
 ```bash
 PORT=3000
 PG_HOST=localhost
@@ -43,6 +45,7 @@ JWT_SECRET=your_secret
 **Note:** By default, this project assumes you are testing on your local machine so `localhost` should remain the same, however, you are free to change the value of `PORT` to whatever port you would like.
 
 To **generate a secure `JWT_SECRET`**, run:
+
 ``bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ``
@@ -54,10 +57,12 @@ cd task-manager/src/backend/migrations
 
 Run the following inside `psql`:
 **1.**
+
 ``bash
 \i migration_users.sql;
 ``
 **2.**
+
 ``bash
 \i migration_tasks.sql;
 ``
@@ -68,11 +73,13 @@ This will create the necessary tables (`users` and `tasks`).
 Ensure that you are within the `task-manager/` directory first.
 
 1. Install the backend dependencies:
+
 ``bash
 npm install
 ``
 
 2. Start the backend server:
+
 ``bash
 npm run dev:backend
 ``
@@ -82,9 +89,11 @@ The server should now be running on `http://localhost:${PG_PORT}`
 ## Running the Frontend
 1. Open a new terminal and navigate to `task-manager/`
 2. Start the frontend by running:
+
 ``bash
 npm run dev
 ``
+
 The frontend should be available at `http://localhost:5173`
 ---
 ## API Routes
