@@ -66,6 +66,7 @@ Run the following inside `psql`:
 ``
 \i migration_tasks.sql;
 ``
+
 This will create the necessary tables (`users` and `tasks`).
 ---
 ## Running the Backend
@@ -83,6 +84,7 @@ npm install
 ``bash
 npm run dev:backend
 ``
+
 The server should now be running on `http://localhost:${PG_PORT}`
 ---
 
@@ -119,6 +121,7 @@ Example:
 curl -X POST http://localhost:3000/api/auth/register -H "Content-Type:
 application/json" -d '{"username":"testuser","password":"password123"}'
 ``
+
 ---
 ## Troubleshooting
 ### Backend Not Starting?
