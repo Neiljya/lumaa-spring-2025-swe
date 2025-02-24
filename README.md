@@ -52,9 +52,9 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 ### 4. Running Database Migrations
 Navigate to the **migrations** folder: 
-``bash
+```
 cd task-manager/src/backend/migrations
-``
+```
 
 Run the following inside `psql`:
 
