@@ -83,7 +83,7 @@ npm install
 
 2. Start the backend server:
 
-``bash
+``
 npm run dev:backend
 ``
 
