@@ -16,7 +16,7 @@ This repository contains a full-stack task management application with a simple 
 - **PostgreSQL Database Compatible** - Stores users and tasks persistently
 
 ---
-## Setup Guide
+## 🚀 Setup Guide
 
 ### 1. Clone the Repository
 Run the following command:
