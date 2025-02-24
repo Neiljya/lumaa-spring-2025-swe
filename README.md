@@ -63,7 +63,7 @@ Run the following inside `psql`:
 ``
 **2.**
 
-``bash
+``
 \i migration_tasks.sql;
 ``
 This will create the necessary tables (`users` and `tasks`).
