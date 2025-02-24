@@ -190,4 +190,5 @@ Additional comments for files and overall API structure could also improve clari
 As for the backend, currently there is no rate limit for API requests which can be easily abused
 if the project were to be deployed, as a fix, using `express-rate-limit` could help prevent
 the abuse of such routes.
+
 ---
