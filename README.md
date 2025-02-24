@@ -56,11 +56,13 @@ cd task-manager/src/backend/migrations
 ``
 
 Run the following inside `psql`:
-**1.**
 
-``bash
+**1.** 
+
+``
 \i migration_users.sql;
 ``
+
 **2.**
 
 ``
