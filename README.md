@@ -20,9 +20,9 @@ This repository contains a full-stack task management application with a simple 
 ### 1. Clone the Repository
 Run the following command:
 
-``bash
+```
 git clone https://github.com/Neiljya/lumaa-spring-2025-swe.git
-``
+```
 ---
 ## Setting Up The Database (PostgreSQL)
 
@@ -32,7 +32,7 @@ If not, you can install PostgreSQL from [postgresql.org](https://www.postgresql.
 ### 3. Configure the `.env` file
 Create a `.env` file in the **root directory** in the following format:
 
-```bash
+```
 PORT=3000
 PG_HOST=localhost
 PG_USER=your_pg_user
@@ -46,9 +46,9 @@ JWT_SECRET=your_secret
 
 To **generate a secure `JWT_SECRET`**, run:
 
-``bash
+```
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-``
+```
 ### 4. Running Database Migrations
 Navigate to the **migrations** folder: 
 ``bash
@@ -59,15 +59,15 @@ Run the following inside `psql`:
 
 **1.** 
 
-``
+```
 \i migration_users.sql;
-``
+```
 
 **2.**
 
-``
+```
 \i migration_tasks.sql;
-``
+```
 
 This will create the necessary tables (`users` and `tasks`).
 ---
@@ -77,15 +77,15 @@ Ensure that you are within the `task-manager/` directory first.
 
 1. Install the backend dependencies:
 
-``bash
+```
 npm install
-``
+```
 
 2. Start the backend server:
 
-``
+```
 npm run dev:backend
-``
+```
 
 The server should now be running on `http://localhost:${PG_PORT}`
 ---
@@ -94,9 +94,9 @@ The server should now be running on `http://localhost:${PG_PORT}`
 1. Open a new terminal and navigate to `task-manager/`
 2. Start the frontend by running:
 
-``bash
+```
 npm run dev
-``
+```
 
 The frontend should be available at `http://localhost:5173`
 ---
@@ -119,50 +119,58 @@ The frontend should be available at `http://localhost:5173`
 
 **Option 2: Using Curl**
 Example:
-``bash
+```
 curl -X POST http://localhost:3000/api/auth/register -H "Content-Type:
 application/json" -d '{"username":"testuser","password":"password123"}'
-``
+```
 
 ---
 ## Troubleshooting
 ### Backend Not Starting?
 - Ensure you're connected to your PostgreSQL database
-``bash
+  
+```
 \c your_database_name
-``
+```
 
 - Verify `.env` variables are correctly set in the format:
-``bash
+  
+```
 PORT=3000
 PG_HOST=localhost
 PG_USER=your_pg_user
 PG_PASSWORD=your_password
 PG_DATABASE=your_db_name
 JWT_SECRET=your_secret
-``
+```
 
 - Check if the database already exists by running
-``bash
+  
+```
 psql -U postgres -d your_db_name
-``
+```
 
 ### Database Connection Failing?
 - Verify the `.env` credentials match your PostgreSQL setup
 - Check that you've properly migrated the tables:
-``bash
+  
+```
 \dt
-``
+```
+
 The relations list should look like this:
-``bash
+
+```
          List of relations
  Schema | Name  | Type  |  Owner
 --------+-------+-------+----------
  public | tasks | table | postgres
  public | users | table | postgres
 (2 rows)
-``
+```
+
 ---
+
 **Additional Notes/Improvements**
 In the future, further project improvements could include adding 
 additional unit tests such as jest tests for backend services and frontend components.
