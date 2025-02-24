@@ -6,11 +6,14 @@ const usernameCol = 'username';
 const passwordCol = 'password';
 const returningCols = '*';
 
+const CREATE_USER_QUERY = `INSERT INTO ${userTable} (${insertCols}) VALUES (${valuePlaceholders}) RETURNING ${returningCols}`
+const FIND_USER_QUERY = `SELECT ${selectCols} FROM ${userTable} WHERE ${whereClause}`;
+
 const createUser = async (username, hashedPassword) => {
     const insertCols = `${usernameCol}, ${passwordCol}`;
     const valuePlaceholders = '$1, $2';
     const queryFormat =
-        `INSERT INTO ${userTable} (${insertCols}) VALUES (${valuePlaceholders}) RETURNING ${returningCols}`
+        CREATE_USER_QUERY
 
     const values = [username, hashedPassword];
     const res = await pool.query(queryFormat, values);
@@ -22,7 +25,7 @@ const findUser = async (username) => {
     const selectCols = '*';
     const whereClause = `${usernameCol} = $1`;
     const queryFormat =
-        `SELECT ${selectCols} FROM ${userTable} WHERE ${whereClause}`;
+        FIND_USER_QUERY
 
     const values = [username];
     const res = await pool.query(queryFormat, values);
