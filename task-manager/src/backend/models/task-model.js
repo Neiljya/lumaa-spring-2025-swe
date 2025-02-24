@@ -2,6 +2,8 @@ const pool = require('../config/database');
 
 const tableName = 'tasks';
 
+/** TABLE LAYOUT **/
+
 const cols = {
     title: 'title',
     description: 'description',
@@ -9,8 +11,21 @@ const cols = {
     isComplete: '"isComplete"'
 };
 
+/******************/
+
+/*** QUERY ARGS ****/
+
 const selectCols = '*';
 const orderBy = 'id';
+
+/******************/
+
+/** ERROR MESSAGES **/
+const TASK_NOT_FOUND_ERR = "Task not found";
+const UNDEF_UPDATED_TITLE_ERR = "Updated title is undefined";
+
+/******************/
+
 
 const getTasksByUser = async (id) => {
     const queryFormat =
@@ -38,7 +53,7 @@ const updateTask = async (id, fields) => {
     const existingTaskQuery = await pool.query(`SELECT * FROM ${tableName} WHERE id = $1`, [id]);
 
     if (!existingTaskQuery.rows.length) {
-        throw new Error("Task not found");
+        throw new Error(TASK_NOT_FOUND_ERR);
     }
 
     const existingTask = existingTaskQuery.rows[0];
@@ -49,7 +64,7 @@ const updateTask = async (id, fields) => {
     const updatedIsComplete = fields.isComplete !== undefined ? fields.isComplete : existingTask.isComplete;
 
     if (updatedTitle === undefined) {
-        throw new Error("Updated title is undefined");
+        throw new Error(UNDEF_UPDATED_TITLE_ERR);
     }
 
     const queryFormat = `UPDATE ${tableName} SET title = $1, description = $2, ${cols.isComplete} = $3 WHERE id = $4 RETURNING ${selectCols}`;

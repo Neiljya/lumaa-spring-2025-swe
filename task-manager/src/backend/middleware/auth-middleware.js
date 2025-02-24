@@ -1,6 +1,20 @@
 const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'jwt_secret';
+const TOKEN_TYPE = 'Bearer';
+
+/** ERROR CODES **/
+const BAD_REQUEST = 400;
+const UNAUTHORIZED = 401;
+const FORBIDDEN = 403;
+
+/******************/
+
+const PART_LENGTH = 2;
+
+// Locations in the parts array where the type and token is
+const TYPE_INDEX = 0;
+const TOKEN_INDEX = 1;
 
 
 /**
@@ -15,18 +29,18 @@ const authenticateJWT = (req, res, next) => {
     if (authHeader) {
         const parts = authHeader.split(' ');
 
-        if (parts.length !== 2 || parts[0] !== 'Bearer') {
-            return res.sendStatus(400);
+        if (parts.length !== PART_LENGTH || parts[TYPE_INDEX] !== TOKEN_TYPE) {
+            return res.sendStatus(BAD_REQUEST);
         }
 
-        const token = parts[1];
+        const token = parts[TOKEN_INDEX];
         jwt.verify(token, JWT_SECRET, (error, user) => {
-            if (error) return res.sendStatus(403);
+            if (error) return res.sendStatus(FORBIDDEN);
             req.user = user;
             next();
         });
     } else {
-        res.sendStatus(401);
+        res.sendStatus(UNAUTHORIZED);
     }
 }
 
