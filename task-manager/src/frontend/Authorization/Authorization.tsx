@@ -12,6 +12,18 @@ export class Authorization {
     private authMessage: HTMLElement | null = null;
     private isLoginMode: boolean = true;
 
+    // The main path to navigate to after logging in
+    private MAIN_PATH = "/tasks";
+    private MISSING_FIELDS_WARNING = "Username and password are required!";
+    private LOGIN_SUCCESSFUL_MSG = "Login successful! Redirecting now..";
+    private REG_SUCCESSFUL_MSG = "Registration successful! Please login.";
+    private AUTH_ERROR_MSG = "Authentication failed: ";
+    private LOGIN_BTN = "Sign In";
+    private REGISTER_BTN = "Register";
+
+    // Delay before redirecting to MAIN_PATH
+    private REDIRECT_TIMEOUT = 100;
+
     constructor(container: HTMLElement) {
         this.container = container;
         this.initTemplate();
@@ -52,7 +64,7 @@ export class Authorization {
         console.log(password);
 
         if (username.length === 0 || password.length === 0) {
-            this.authMessage.textContent = "Username and password are required!";
+            this.authMessage.textContent = this.MISSING_FIELDS_WARNING;
             return;
         }
 
@@ -65,18 +77,18 @@ export class Authorization {
 
                 window.dispatchEvent(new Event("storage"));
 
-                this.authMessage.textContent = `Login successful!`;
+                this.authMessage.textContent = this.LOGIN_SUCCESSFUL_MSG;
 
                 setTimeout(() => {
-                    window.location.href = "/tasks";
-                }, 100);
+                    window.location.href = this.MAIN_PATH;
+                }, this.REDIRECT_TIMEOUT);
             } else {
                 await register(username, password);
-                this.authMessage.textContent = "Registration successful! Please login.";
+                this.authMessage.textContent = this.REG_SUCCESSFUL_MSG;
                 this.toggleAuthMode();
             }
         } catch (error) {
-            this.authMessage.textContent = "Authentication failed: " + (error)?.response?.data?.message;
+            this.authMessage.textContent = this.AUTH_ERROR_MSG + (error)?.response?.data?.message;
         }
     }
 
@@ -84,7 +96,7 @@ export class Authorization {
         if (!this.submitBtn || !this.authMessage) return;
 
         this.isLoginMode = !this.isLoginMode;
-        this.submitBtn.textContent = this.isLoginMode ? "Sign In" : "Register";
+        this.submitBtn.textContent = this.isLoginMode ? this.LOGIN_BTN : this.REGISTER_BTN;
         this.authMessage.textContent = "";
     }
 

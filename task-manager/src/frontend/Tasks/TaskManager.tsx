@@ -30,6 +30,11 @@ export class TaskManager {
     private taskService;
 
     private MIN_TASK_LENGTH = 0;
+    private DELETE_BTN_TEXT = "Delete";
+    private TASKLIST_ID = '#taskList';
+    private NEW_TASK_NAME_ID = '#newTaskName';
+    private NEW_TASK_DESC_ID = '#newTaskDesc';
+    private ADD_TASK_BTN_ID = '#addTaskBtn';
 
     /**
      * Default constructor
@@ -83,7 +88,7 @@ export class TaskManager {
 
         // Delete button
         const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Delete';
+        deleteBtn.textContent = this.DELETE_BTN_TEXT;
         deleteBtn.addEventListener('click', async () => {
             try {
                 await this.taskService.deleteTask(task.id);
@@ -133,10 +138,10 @@ export class TaskManager {
         this.container.innerHTML = taskTemplate;
 
         // Below grabs elements from the template
-        this.taskListElement = this.container.querySelector('#taskList') as HTMLUListElement;
-        this.newTaskName = this.container.querySelector('#newTaskName') as HTMLInputElement;
-        this.newTaskDesc = this.container.querySelector('#newTaskDesc') as HTMLInputElement;
-        this.addTaskBtn = this.container.querySelector('#addTaskBtn') as HTMLButtonElement;
+        this.taskListElement = this.container.querySelector(this.TASKLIST_ID) as HTMLUListElement;
+        this.newTaskName = this.container.querySelector(this.NEW_TASK_NAME_ID) as HTMLInputElement;
+        this.newTaskDesc = this.container.querySelector(this.NEW_TASK_DESC_ID) as HTMLInputElement;
+        this.addTaskBtn = this.container.querySelector(this.ADD_TASK_BTN_ID) as HTMLButtonElement;
 
         /* debugging
         console.log(this.addTaskBtn);
