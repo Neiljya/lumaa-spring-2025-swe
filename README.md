@@ -193,3 +193,5 @@ if the project were to be deployed, as a fix, using `express-rate-limit` could h
 the abuse of such routes.
 
 ---
+
+Expectations: ~$20/h corresponds to ~$3400/mo (assuming standard 40-hour work week)
