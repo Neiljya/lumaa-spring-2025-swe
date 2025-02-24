@@ -21,7 +21,27 @@ const ProtectedRoute: React.FC<{ children: React.JSX.Element }> = ({ children })
   return isAuthenticated() ? children : <Navigate to={AUTH_PATH} replace />;
 };
 
-function App() {
+const App: React.FC = () => {
+
+  const [auth, setAuth] = React.useState(isAuthenticated());
+
+  /**
+   * Effect to listen for changes in localStorage token
+   * which ensures that the page automatically re-renders
+   * based on authentication status
+   */
+  React.useEffect(() => {
+    const handleStorageChange = () => {
+      setAuth(isAuthenticated());
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
 
   return (
     <BrowserRouter>

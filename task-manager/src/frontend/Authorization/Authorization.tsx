@@ -62,7 +62,14 @@ export class Authorization {
                 const token = response.data.token;
 
                 localStorage.setItem('token', token);
+
+                window.dispatchEvent(new Event("storage"));
+
                 this.authMessage.textContent = `Login successful!`;
+
+                setTimeout(() => {
+                    window.location.href = "/tasks";
+                }, 100);
             } else {
                 await register(username, password);
                 this.authMessage.textContent = "Registration successful! Please login.";
